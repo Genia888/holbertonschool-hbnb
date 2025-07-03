@@ -1,4 +1,12 @@
+from flask_jwt_extended import JWTManager
+import os
 from flask import Flask
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from app.extensions import db, bcrypt
 from flask_restx import Api
@@ -13,6 +21,9 @@ def create_app(config_name="default"):
 
     from config import config # Importe le dictionnaire
     app = Flask(__name__)
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'dev-secret')
+    from app.extensions import jwt
+    jwt.init_app(app)
     app.config.from_object(config[config_name])
 
     db.init_app(app)
