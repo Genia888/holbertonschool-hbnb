@@ -1,61 +1,28 @@
-from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from app.services.facade import dalton as facade
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models import storage
+from models.user import User
 
-api = Namespace('users', description='Users operations')
+users_bp = Blueprint('users', __name__, url_prefix='/users')
 
-user_model = api.model('User', {
-    'first_name': fields.String(required=True, description='First name'),
-    'last_name':  fields.String(required=True, description='Last name'),
-    'email':      fields.String(required=True, description='Email'),
-    'password':   fields.String(required=True, description='Password')
-})
 
-@api.route('/')
-class UserList(Resource):
-    @api.expect(user_model, validate=True)
-    def post(self):
-        from flask import request
-        data = request.get_json()
-        for f in ('first_name','last_name','email','password'):
-            if not data.get(f):
-                return {'error': f'Missing {f}'}, 400
-        if len(data['password']) < 6:
-            return {'error': 'Password too short'}, 400
-        user = facade.create_user(data)
-        return {'message': 'User created', 'id': user.id}, 201
+@users_bp.route('/<user_id>', methods=['PUT'])
+@jwt_required()
+def update_user(user_id):
+    current_user = get_jwt_identity()
+    
+    if user_id != current_user['id']:
+        return jsonify({"error": "Unauthorized"}), 403
 
-@api.route('/login/')
-class LoginResource(Resource):
-    def post(self):
-        from flask import request
-        data = request.get_json()
-        user = facade.authenticate_user(data.get('email'), data.get('password'))
-        if not user:
-            return {'message': 'Invalid credentials'}, 401
-        token = create_access_token(identity=user.id, additional_claims={'is_admin': False})
-        return {'access_token': token}, 200
+    user = storage.get(User, user_id)
+    if not user:
+        return jsonify({"error": "User not found"}), 404
 
-@api.route('/protected/')
-class ProtectedResource(Resource):
-    @jwt_required()
-    def get(self):
-        current_user = get_jwt_identity()
-        return {'message': f'Hello user {current_user}, you are authorized'}, 200
+    data = request.get_json()
+    for key, value in data.items():
+        if key in ['email', 'password', 'id', 'created_at', 'updated_at']:
+            continue
+        setattr(user, key, value)
 
-@api.route('/login/')
-class LoginResource(Resource):
-    def post(self):
-        from flask import request
-        data = request.get_json()
-        user = facade.authenticate_user(data.get('email'), data.get('password'))
-        if not user:
-            return {"message": "Invalid credentials"}, 401
-        token = create_access_token(identity=user.id)
-        return {"access_token": token}, 200
-
-@api.route('/protected/')
-class ProtectedResource(Resource):
-    @jwt_required()
-    def get(self):
-        return {"message": "You are logged in and authorized"}, 200
+    storage.save()
+    return jsonify(user.to_dict()), 200
