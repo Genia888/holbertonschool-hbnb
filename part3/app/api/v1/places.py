@@ -1,83 +1,60 @@
-from flask_restx import Namespace, Resource, fields
-from app.services.facade import facade
+from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models import storage
+from models.place import Place
 
-api = Namespace('places', description='Place operations')
+places_bp = Blueprint('places', __name__, url_prefix='/places')
 
-# Models
-amenity_model = api.model('PlaceAmenity', {
-    'id': fields.String(description='Amenity ID'),
-    'name': fields.String(description='Name of the amenity')
-})
 
-user_model = api.model('PlaceUser', {
-    'id': fields.String(description='User ID'),
-    'first_name': fields.String(description='First name of the owner'),
-    'last_name': fields.String(description='Last name of the owner'),
-    'email': fields.String(description='Email of the owner')
-})
+@places_bp.route('', methods=['POST'])
+@jwt_required()
+def create_place():
+    current_user = get_jwt_identity()
+    data = request.get_json()
 
-review_model = api.model('PlaceReview', {
-    'id': fields.String(description='Review ID'),
-    'text': fields.String(description='Text of the review'),
-    'rating': fields.Integer(description='Rating of the place (1-5)'),
-    'user_id': fields.String(description='ID of the user')
-})
+    if not data:
+        return jsonify({"error": "Missing JSON data"}), 400
 
-place_model = api.model('Place', {
-    'title': fields.String(required=True, description='Title of the place'),
-    'description': fields.String(description='Description of the place'),
-    'price': fields.Float(required=True, description='Price per night'),
-    'latitude': fields.Float(required=True, description='Latitude of the place'),
-    'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner'),
-    'amenities': fields.List(fields.String, required=True, description="List of amenities ID's"),
-})
+    data['owner_id'] = current_user['id']
+    new_place = Place(**data)
+    storage.new(new_place)
+    storage.save()
+    return jsonify(new_place.to_dict()), 201
 
-@api.route('/')
-class PlaceList(Resource):
-    @api.expect(place_model)
-    @api.response(201, 'Place successfully created')
-    @api.response(400, 'Invalid input data')
-    def post(self):
-        """Register a new place"""
-        data = api.payload
-        try:
-            created_place = facade.create_place(data)
-            return created_place, 201
-        except Exception as error:
-            return {'message': str(error)}, 400
 
-    @api.response(200, 'List of places retrieved successfully')
-    def get(self):
-        """Retrieve a list of all places"""
-        try:
-            places = facade.get_all_places()
-            return places, 200
-        except Exception as error:
-            return {'message': str(error)}, 500
+@places_bp.route('/<place_id>', methods=['PUT'])
+@jwt_required()
+def update_place(place_id):
+    current_user = get_jwt_identity()
+    place = storage.get(Place, place_id)
 
-@api.route('/<place_id>')
-class PlaceResource(Resource):
-    @api.response(200, 'Place details retrieved successfully')
-    @api.response(404, 'Place not found')
-    def get(self, place_id):
-        """Get place details by ID"""
-        place = facade.get_place(place_id)
-        if place:
-            return place.to_dict(), 200
-        return {'message': 'Place not found'}, 404
+    if not place:
+        return jsonify({"error": "Place not found"}), 404
 
-    @api.expect(place_model)
-    @api.response(200, 'Place updated successfully')
-    @api.response(404, 'Place not found')
-    @api.response(400, 'Invalid input data')
-    def put(self, place_id):
-        """Update a place's information"""
-        data = api.payload
-        try:
-            updated_place = facade.update_place(place_id, data)
-            if updated_place:
-                return updated_place.to_dict(), 200
-            return {'message': 'Place not found'}, 404
-        except Exception as error:
-            return {'message': str(error)}, 400
+    if place.owner_id != current_user['id']:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    data = request.get_json()
+    for key, value in data.items():
+        if key not in ['id', 'owner_id', 'created_at', 'updated_at']:
+            setattr(place, key, value)
+
+    storage.save()
+    return jsonify(place.to_dict()), 200
+
+
+@places_bp.route('/<place_id>', methods=['DELETE'])
+@jwt_required()
+def delete_place(place_id):
+    current_user = get_jwt_identity()
+    place = storage.get(Place, place_id)
+
+    if not place:
+        return jsonify({"error": "Place not found"}), 404
+
+    if place.owner_id != current_user['id']:
+        return jsonify({"error": "Unauthorized"}), 403
+
+    storage.delete(place)
+    storage.save()
+    return '', 204
