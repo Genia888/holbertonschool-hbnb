@@ -1,28 +1,43 @@
-from flask import Blueprint, request, jsonify
+from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from models import storage
-from models.user import User
 
-users_bp = Blueprint('users', __name__, url_prefix='/users')
+ns = Namespace("users", description="User operations")
 
+user_model = ns.model("User", {
+    "first_name": fields.String(),
+    "last_name": fields.String(),
+    "email": fields.String(readOnly=True),
+    "password": fields.String(readOnly=True),
+})
 
-@users_bp.route('/<user_id>', methods=['PUT'])
-@jwt_required()
-def update_user(user_id):
-    current_user = get_jwt_identity()
-    
-    if user_id != current_user['id']:
-        return jsonify({"error": "Unauthorized"}), 403
+USERS = {
+    "fake-user-id": {
+        "email": "admin@hbnb.com",
+        "first_name": "Admin",
+        "last_name": "User",
+        "password": "admin"
+    }
+}
 
-    user = storage.get(User, user_id)
-    if not user:
-        return jsonify({"error": "User not found"}), 404
+@ns.route("/me")
+class UserMe(Resource):
+    @ns.doc(security='apikey')
+    @jwt_required()
+    def get(self):
+        identity = get_jwt_identity()
+        return USERS.get(identity), 200
 
-    data = request.get_json()
-    for key, value in data.items():
-        if key in ['email', 'password', 'id', 'created_at', 'updated_at']:
-            continue
-        setattr(user, key, value)
-
-    storage.save()
-    return jsonify(user.to_dict()), 200
+    @ns.doc(security='apikey')
+    @jwt_required()
+    @ns.expect(user_model)
+    def put(self):
+        identity = get_jwt_identity()
+        user = USERS.get(identity)
+        if not user:
+            return {"error": "User not found"}, 404
+        data = ns.payload
+        # Interdit la modif email & password
+        data.pop("email", None)
+        data.pop("password", None)
+        user.update(data)
+        return {"message": "User updated", "user": user}, 200

@@ -1,6 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
+from app.models import PLACES
 
 ns = Namespace("reviews", description="Operations on reviews")
 
@@ -26,12 +27,24 @@ class ReviewList(Resource):
         data = request.get_json()
         place_id = data.get("place_id")
         text = data.get("text")
-        # 1. Ownership & doublon skipped (in-memory demo)
+        user_id = get_jwt_identity()
+        place_owner_id = None
+        for p in PLACES:
+            if p["id"] == place_id:
+                place_owner_id = p["user_id"]
+                break
+        if place_owner_id is None:
+            return {"error": "Place not found"}, 404
+        if place_owner_id == user_id:
+            return {"error": "You can't review your own place"}, 400
+        for r in REVIEWS:
+            if r["place_id"] == place_id and r["user_id"] == user_id:
+                return {"error": "You already reviewed this place"}, 400
         review = {
             "id": str(REVIEW_ID),
             "place_id": place_id,
             "text": text,
-            "user_id": get_jwt_identity()
+            "user_id": user_id
         }
         REVIEW_ID += 1
         REVIEWS.append(review)
