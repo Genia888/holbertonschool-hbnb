@@ -1,27 +1,25 @@
-from datetime import datetime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, String, DateTime, Boolean
-from app.extensions import bcrypt
-import uuid
+from app.extensions import db
+from .base_model import BaseModel
 
-class BaseModel:
-    id = Column(String(60), primary_key=True, default=lambda: str(uuid.uuid4()))
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-Base = declarative_base(cls=BaseModel)
-
-class User(Base):
+class User(BaseModel, db.Model):
     __tablename__ = 'users'
-    first_name = Column(String(128), nullable=False)
-    last_name = Column(String(128), nullable=False)
-    email = Column(String(128), nullable=False, unique=True)
-    _password = Column("password", String(128), nullable=False)
-    is_admin = Column(Boolean, default=False)
+    first_name = db.Column(db.String(128), nullable=False)
+    last_name = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(128), unique=True, nullable=False)
+    password = db.Column(db.String(256), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
-    def set_password(self, plaintext_password):
-        self._password = bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
+class Place(BaseModel, db.Model):
+    __tablename__ = 'places'
+    name = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    city = db.Column(db.String(128), nullable=False)
+    address = db.Column(db.String(256), nullable=False)
 
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self._password, password)
-PLACES = []
+class Review(BaseModel, db.Model):
+    __tablename__ = 'reviews'
+    text = db.Column(db.Text, nullable=False)
+
+class Amenity(BaseModel, db.Model):
+    __tablename__ = 'amenities'
+    name = db.Column(db.String(128), nullable=False)
