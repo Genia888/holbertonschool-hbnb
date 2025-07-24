@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>List of Places</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js" defer></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <nav>
+      <img src="logo.png" alt="HBnB Logo" class="logo">
+      <a href="login.html" class="login-button">Login</a>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- Filter bar -->
+    <section id="filter">
+      <label for="price-filter">Max Price:</label>
+      <select id="price-filter">
+        <option value="">All</option>
+        <option value="50">Under $50</option>
+        <option value="100">Under $100</option>
+        <option value="200">Under $200</option>
+      </select>
+    </section>
+
+    <!-- PLACES LIST -->
+    <section id="places-list">
+      <!-- Example card -->
+      <div class="place-card">
+        <h3>Charming Studio</h3>
+        <p>Price per night: $80</p>
+        <button class="details-button" onclick="window.location.href='place.html?id=1'">View Details</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 HBNB. All rights reserved.</p>
+  </footer>
+</body>
+</html>
