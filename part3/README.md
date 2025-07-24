@@ -80,7 +80,7 @@ erDiagram
     }
 
     REVIEW {
-        string id PK
+        string id
         string user_id
         string place_id
         string text
@@ -681,7 +681,7 @@ curl -X POST "http://127.0.0.1:5000/api/v1/auth/login" \
 - [SQLAlchemy Documentation](https://docs.sqlalchemy.org/)
 - [Flask-SQLAlchemy Documentation](https://flask-sqlalchemy.palletsprojects.com/)
 - [Flask-Bcrypt](https://flask-bcrypt.readthedocs.io/)
-- [cURL Guide](https://everything.curl.dev/http/post)
+- [CURL Guide](https://everything.curl.dev/http/post)
 
 ---
 
