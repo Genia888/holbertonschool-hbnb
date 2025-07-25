@@ -1,48 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>List of Places</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="scripts.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./styles.css">
+<link rel="icon" type="image/png" href="../images/icon.png" />
+    <title>List of Places</title>
+    
 </head>
 <body>
-  <!-- HEADER -->
-  <header>
-    <nav>
-      <img src="logo.png" alt="HBnB Logo" class="logo">
-      <a href="login.html" class="login-button">Login</a>
-    </nav>
-  </header>
-
-  <!-- MAIN -->
-  <main>
-    <!-- Filter bar -->
-    <section id="filter">
-      <label for="price-filter">Max Price:</label>
-      <select id="price-filter">
-        <option value="">All</option>
-        <option value="50">Under $50</option>
-        <option value="100">Under $100</option>
-        <option value="200">Under $200</option>
-      </select>
-    </section>
-
-    <!-- PLACES LIST -->
-    <section id="places-list">
-      <!-- Example card -->
-      <div class="place-card">
-        <h3>Charming Studio</h3>
-        <p>Price per night: $80</p>
-        <button class="details-button" onclick="window.location.href='place.html?id=1'">View Details</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2025 HBNB. All rights reserved.</p>
-  </footer>
+        <header>
+        <nav>
+            <img class="logo" src="./logo.png" />
+            <a href="login.html" id="login-link">Login</a>
+            <a href="index.html" id="login-link">Home</a>
+            <a href="place.html" id="login-link">Place</a>
+        </nav>
+</header>
+    <main>
+        <h1>Available Places</h1>
+        <section id="filter">
+            <label for="price-filter">Max Price:</label>
+            <select id="price-filter">
+                <!-- Options will be populated dynamically -->
+                 <option>0-50</option>
+                 <option>50-100</option>
+                 <option>100+</option>
+            </select>
+        </section>
+        <section id="places-list">
+            <!-- List of places will be populated dynamically -->
+        </section>
+    </main>
+    <script src="./scripts.js"></script>
 </body>
+<footer>
+    <p>&copy; HBNB SebSa12000 - Holberton School - C#26 - All rights reserved</p>
+</footer>
 </html>

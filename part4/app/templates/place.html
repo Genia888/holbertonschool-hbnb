@@ -2,11 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./styles.css">
+<link rel="icon" type="image/png" href="../images/icon.png" />
     <title>Place Details</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <header>
+        <nav>
+            <img class="logo"  src="./logo.png" />
+            <a href="login.html" id="login-link" class="login-button">Login</a>
+            <a href="index.html" id="login-link">Home</a>
+            <a href="place.html" id="login-link">Place</a>
+        </nav>
+</header>
     <main>
         <section id="place-details">
             <!-- Place details will be populated dynamically -->
@@ -15,15 +24,30 @@
             <!-- Reviews will be populated dynamically -->
         </section>
         <section id="add-review">
+                    <!-- Add something to idfentify the place you're reviewing -->
+        <form id="review-form">
             <h2>Add a Review</h2>
-            <form id="review-form">
-                <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
-                
-                <button type="submit">Submit</button>
-            </form>
+            <label for="review">Your Review:</label>
+            <BR>
+            <textarea id="review" name="review" required></textarea>
+            <BR>
+            <label for="rating">Rating:</label>
+            <select id="rating" name="rating" required>
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+            <BR>
+            <button type="submit">Submit Review</button>
+        </form>
         </section>
     </main>
-    <script src="scripts.js"></script>
+    <script src="./scripts.js"></script>
 </body>
+<footer>
+    <p>&copy; HBNB SebSa12000 - Holberton School - C#26 - All rights reserved</p>
+</footer>
 </html>

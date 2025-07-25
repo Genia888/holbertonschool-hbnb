@@ -1,3 +1,4 @@
+
 /* 
   This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks. 
   You'll probably need to override some of theese styles.
@@ -16,9 +17,44 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: orange;
     color: #fff;
     padding: 1rem;
+}
+
+h1 {
+    text-align: center;
+}
+
+#filter {
+    text-align: center;
+}
+
+.place-card {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+
+    
+}
+
+#place-details {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+
+    
+}
+
+.review-card {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
 }
 
 nav a {
