@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="./styles.css">
-<link rel="icon" type="image/png" href="../images/icon.png" />
     <title>List of Places</title>
-    
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-        <header>
+    <header>
         <nav>
-            <img class="logo" src="./logo.png" />
             <a href="login.html" id="login-link">Login</a>
-            <a href="index.html" id="login-link">Home</a>
-            <a href="place.html" id="login-link">Place</a>
         </nav>
-</header>
+    </header>
     <main>
-        <h1>Available Places</h1>
         <section id="filter">
             <label for="price-filter">Max Price:</label>
             <select id="price-filter">
                 <!-- Options will be populated dynamically -->
-                 <option>0-50</option>
-                 <option>50-100</option>
-                 <option>100+</option>
             </select>
         </section>
         <section id="places-list">
             <!-- List of places will be populated dynamically -->
         </section>
     </main>
-    <script src="./scripts.js"></script>
+    <script src="scripts.js"></script>
 </body>
-<footer>
-    <p>&copy; HBNB SebSa12000 - Holberton School - C#26 - All rights reserved</p>
-</footer>
 </html>
