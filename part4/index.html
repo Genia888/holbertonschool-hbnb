@@ -1,28 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Places</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>List of Places</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="scripts.js" defer></script>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="login.html" id="login-link">Login</a>
-        </nav>
-    </header>
-    <main>
-        <section id="filter">
-            <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <!-- Options will be populated dynamically -->
-            </select>
-        </section>
-        <section id="places-list">
-            <!-- List of places will be populated dynamically -->
-        </section>
-    </main>
-    <script src="scripts.js"></script>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-left">
+      <a href="login.html" class="login-button">Login</a>
+    </div>
+
+    <div class="header-center">
+      <img src="logo.png" alt="HBnB Logo" class="logo">
+    </div>
+
+    <div class="header-right" id="auth-actions">
+      <span id="user-info" style="display: none;"></span>
+      <button id="logout-button" style="display: none;">Logout</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- Filter bar -->
+    <section id="filter">
+      <label for="price-filter">Max Price:</label>
+      <select id="price-filter">
+        <option value="">All</option>
+        <option value="50">Under $50</option>
+        <option value="100">Under $100</option>
+        <option value="200">Under $200</option>
+      </select>
+    </section>
+
+    <!-- PLACES LIST -->
+    <section id="places-list">
+      <!-- Cards will load here dynamically -->
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 HBNB. All rights reserved.</p>
+  </footer>
 </body>
 </html>
