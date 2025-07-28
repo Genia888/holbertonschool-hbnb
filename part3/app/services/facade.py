@@ -27,6 +27,9 @@ class HBnBFacade:
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
 
+    def get_user_by_id(self, user_id):
+        return self.user_repo.get(user_id)
+    
     # ----- PLACE -----
     def create_place(self, place_data):
         place = Place(
@@ -35,7 +38,7 @@ class HBnBFacade:
             price=place_data['price'],
             latitude=place_data['latitude'],
             longitude=place_data['longitude'],
-            owner=place_data.get('owner_id')
+            owner_id=place_data.get('owner_id')
         )
 
         for amenity_id in place_data.get('amenities', []):
