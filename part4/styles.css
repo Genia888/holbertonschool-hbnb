@@ -1,32 +1,254 @@
-/* 
-  This is a SAMPLE File to get you started. Follow the instructions on the project to complete the tasks. 
-  You'll probably need to override some of theese styles.
-*/
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
-
+/* === GLOBAL === */
 body {
-    background-color: #f4f4f4;
-    color: #333;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f5f5f0, #e6d9c4);
+  color: #3a3a3a;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
+/* 🌬️ Effet vent/nuage nacré */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, #fdf6ee, #efe4d1, #f5f0e6);
+  opacity: 0.4;
+  z-index: -1;
+  animation: windFlow 20s linear infinite;
+  transform: translate(-25%, -25%);
 }
 
-nav a {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 1rem;
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250%;
+  height: 250%;
+  background: radial-gradient(circle at 60% 60%, #f6eee2, #fdf8ef, transparent);
+  opacity: 0.2;
+  z-index: -2;
+  animation: windReverse 40s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes windFlow {
+  0% {
+    transform: translate(-25%, -25%) scale(1);
+  }
+  50% {
+    transform: translate(-20%, -30%) scale(1.02);
+  }
+  100% {
+    transform: translate(-25%, -25%) scale(1);
+  }
+}
+
+@keyframes windReverse {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10%, -5%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 main {
-    padding: 2rem;
+  flex: 1;
+  padding: 20px;
+}
+
+/* === HEADER === */
+header {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e0d8ca;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+}
+
+.logo {
+  height: 50px;
+  cursor: pointer;
+}
+
+/* === NAV BUTTONS === */
+.login-button,
+#logout-button {
+  background: linear-gradient(135deg, #d5c4a1, #f5f5f0);
+  color: #3a3a3a;
+  padding: 8px 16px;
+  border: 1px solid #c2b59b;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.login-button:hover,
+#logout-button:hover {
+  background: linear-gradient(135deg, #e6d9c4, #f9f7f1);
+  border-color: #b5a789;
+}
+
+/* === FOOTER === */
+footer {
+  background: #f2ede3;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #d8cec1;
+}
+
+/* === PLACE CARDS === */
+.place-card {
+  background: #fffdf8;
+  margin: 20px;
+  padding: 16px;
+  border: 1px solid #e5dac5;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.place-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.place-card h3 {
+  margin-top: 0;
+  color: #5a4c3b;
+}
+
+/* === DETAILS BUTTON === */
+.details-button {
+  background-color: #cab89e;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.details-button:hover {
+  background-color: #a8926f;
+}
+
+/* === FILTER === */
+#filter {
+  margin: 0 20px 20px 20px;
+  padding: 10px;
+  background-color: #fdfaf4;
+  border: 1px solid #e0d8ca;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+}
+
+/* === ERROR === */
+.error {
+  color: #c0392b;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* === NAV FLEX FIX === */
+header .left-nav,
+header .right-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+header .right-nav {
+  margin-left: auto;
+}
+
+#user-info {
+  font-weight: bold;
+  color: #7b6e5d;
+}
+
+/* === STARS === */
+.star-container {
+  display: inline-block;
+  font-size: 1.8rem;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.star-container span:hover,
+.star-container span.hovered,
+.star-container span.selected {
+  color: #f1c40f;
+}
+
+/* === REVIEW FORM === */
+#add-review {
+  background: #fffdf8;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #e5dac5;
+  border-radius: 10px;
+}
+
+#review-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #5a4c3b;
+}
+
+#review-text {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cfc4ae;
+  border-radius: 6px;
+  resize: vertical;
+  background-color: #fefdfb;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+#review-form button {
+  background-color: #bca98c;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#review-form button:hover {
+  background-color: #a28c6f;
+}
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
