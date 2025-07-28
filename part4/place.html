@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>Login</title>
-=======
-    <title>Place Details</title>
->>>>>>> d692f2b042bdd741887080c17271773491252cf8
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Place Details</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <main>
-<<<<<<< HEAD
-        <form id="login-form">
-            <h2>Login</h2>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            
-            <button type="submit">Login</button>
-        </form>
-=======
-        <section id="place-details">
-            <!-- Place details will be populated dynamically -->
-        </section>
-        <section id="reviews">
-            <!-- Reviews will be populated dynamically -->
-        </section>
-        <section id="add-review">
-            <h2>Add a Review</h2>
-            <form id="review-form">
-                <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
-                
-                <button type="submit">Submit</button>
-            </form>
-        </section>
->>>>>>> d692f2b042bdd741887080c17271773491252cf8
-    </main>
-    <script src="scripts.js"></script>
+  <header>
+    <nav>
+      <span id="user-info" style="display: none;"></span>
+      <button id="logout-button" style="display: none;">Logout</button>
+      <a href="login.html" class="login-button">Login</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Section dynamique pour le lieu -->
+    <section id="place-details">
+      <!-- Populated dynamically -->
+    </section>
+
+    <!-- Section des avis -->
+    <section id="reviews">
+      <h2>Reviews</h2>
+      <!-- Populated dynamically -->
+    </section>
+
+    <!-- Formulaire d'ajout de review (seulement si connecté) -->
+    <section id="add-review">
+      <h2>Add a Review</h2>
+      <form id="review-form">
+        <label for="review-text">Review:</label><br>
+        <textarea id="review-text" name="review-text" required rows="4"></textarea><br>
+
+        <label for="rating">Rating:</label><br>
+        <label><input type="radio" name="rating" value="1"> 1</label>
+        <label><input type="radio" name="rating" value="2"> 2</label>
+        <label><input type="radio" name="rating" value="3"> 3</label>
+        <label><input type="radio" name="rating" value="4"> 4</label>
+        <label><input type="radio" name="rating" value="5"> 5</label><br><br>
+
+        <p id="review-error" style="color: red;"></p>
+        <p id="review-success" style="color: green;"></p>
+
+        <button type="submit">Submit Review</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="scripts.js"></script>
 </body>
 </html>
