@@ -1,11 +1,20 @@
 from .basemodel import BaseModel
 from app import db
+from sqlalchemy.orm import relationship
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Review(BaseModel):
     __tablename__ = "reviews"
 
     text = db.Column(db.Text, nullable = False)
     rating = db.Column(db.Integer, nullable = False)
+    user_id = db.Column(String(60), ForeignKey('users.id'), nullable=False)
+    place_id =db.Column(String(60), ForeignKey('places.id'), nullable=False)
+
+    # Si besoin de relation :
+    place = relationship("Place", back_populates="reviews")
+    user = relationship("User")
     
     def __init__(self, text, user_id, place_id, rating):
         super().__init__()
