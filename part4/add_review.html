@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Review</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>Add Review</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css"> <!-- Facultatif -->
 </head>
 <body>
-    <main>
-        <!-- Add something to idfentify the place you're reviewing -->
-        <form id="review-form">
-            <h2>Add a Review</h2>
-            <label for="review">Your Review:</label>
-            <textarea id="review" name="review" required></textarea>
-            <label for="rating">Rating:</label>
-            <select id="rating" name="rating" required>
-                <!-- Options for rating -->
-            </select>
-            <button type="submit">Submit Review</button>
-        </form>
-    </main>
-    <script src="scripts.js"></script>
+  <header>
+    <nav>
+      <button class="login-button">Login</button>
+      <span id="user-info" style="display: none;"></span>
+      <button id="logout-button" style="display: none;">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Add a Review</h1>
+    <form id="review-form">
+      <label for="review-text">Your Review:</label><br>
+      <textarea id="review-text" name="review-text" required rows="4" cols="50" placeholder="Write something..."></textarea><br><br>
+
+      <fieldset>
+        <legend>Rating:</legend>
+        <label><input type="radio" name="rating" value="1"> 1 star</label>
+        <label><input type="radio" name="rating" value="2"> 2 stars</label>
+        <label><input type="radio" name="rating" value="3"> 3 stars</label>
+        <label><input type="radio" name="rating" value="4"> 4 stars</label>
+        <label><input type="radio" name="rating" value="5"> 5 stars</label>
+      </fieldset><br>
+
+      <button type="submit">Submit Review</button>
+    </form>
+
+    <div id="review-success" style="color: green; margin-top: 1rem;"></div>
+    <div id="review-error" style="color: red; margin-top: 1rem;"></div>
+  </main>
+
+  <script src="scripts.js"></script>
 </body>
 </html>
