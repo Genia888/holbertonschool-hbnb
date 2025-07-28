@@ -235,7 +235,6 @@ function setupReviewForm() {
   }
 }
 
-// 🚀 Global Init
 
 document.addEventListener('DOMContentLoaded', () => {
   checkUserAuthentication();
