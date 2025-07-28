@@ -1,5 +1,6 @@
 from .basemodel import BaseModel
 from app import db
+from app.models.user import User
 
 
 class Place(BaseModel):
@@ -10,8 +11,10 @@ class Place(BaseModel):
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey("users.id"))
 
-    
+    owner = db.relationship("User", backref="places")
+
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
         self.title = title
@@ -43,5 +46,5 @@ class Place(BaseModel):
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
             "reviews": [r.id for r in self.reviews],
-            "amenities": [a.id for a in self.amenities]
+            "amenities": [a.id for a in self.amenities],
         }
