@@ -1,5 +1,5 @@
 -- ADMIN user
-INSERT INTO users (id, first_name, last_name, email, password, is_admin)
+INSERT INTO users (id, first_name, last_name, email, password_hash, is_admin)
 VALUES (
     '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
     'Admin',
@@ -16,7 +16,7 @@ INSERT INTO amenities (id, name) VALUES
 ('2bc91d2a-d88c-4a1d-9461-e1ff397dbfe6', 'Garage');
 
 -- USERS (avec toutes les colonnes)
-INSERT INTO users (id, first_name, last_name, email, password, is_admin)
+INSERT INTO users (id, first_name, last_name, email, password_hash, is_admin)
 VALUES
 ('1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p', 'Soso', 'Doe', 'soso@example.com', 'Soso12345', FALSE),
 ('2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q', 'MrPhillips', 'Smith', 'doudou@example.com', 'Doudou12345', FALSE),
