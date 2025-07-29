@@ -1,16 +1,32 @@
+:root {
+  --bg-main: #e8f0fe;
+  --bg-secondary: #e0e7ff;
+  --header-bg: #fff;
+  --accent: #2b5dab;
+  --accent-light: #64b5f6;
+  --accent-dark: #1a3557;
+  --button-bg: #f38c1c;
+  --button-bg-hover: #d97706;
+  --text-main: #2a3142;
+  --card-bg: #ffffff;
+  --card-border: #c3d1ee;
+  --review-card-bg: #f6faff;
+  --star: #ffbf00;
+}
+
 /* === GLOBAL === */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #f5f5f0, #e6d9c4);
-  color: #3a3a3a;
+  background: linear-gradient(135deg, var(--bg-main), var(--bg-secondary));
+  color: var(--text-main);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
 }
 
-/* 🌬️ Effet vent/nuage nacré */
+/* Effet vent/nuage nacré */
 body::before {
   content: '';
   position: fixed;
@@ -18,13 +34,12 @@ body::before {
   left: 0;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle at 30% 30%, #fdf6ee, #efe4d1, #f5f0e6);
+  background: radial-gradient(circle at 30% 30%, #e8f0fe, #d6e4fc, #e0e7ff);
   opacity: 0.4;
   z-index: -1;
   animation: windFlow 20s linear infinite;
   transform: translate(-25%, -25%);
 }
-
 body::after {
   content: '';
   position: fixed;
@@ -32,35 +47,21 @@ body::after {
   left: 0;
   width: 250%;
   height: 250%;
-  background: radial-gradient(circle at 60% 60%, #f6eee2, #fdf8ef, transparent);
+  background: radial-gradient(circle at 60% 60%, #d6e4fc, #eaf1fb, transparent);
   opacity: 0.2;
   z-index: -2;
   animation: windReverse 40s ease-in-out infinite;
   pointer-events: none;
 }
-
 @keyframes windFlow {
-  0% {
-    transform: translate(-25%, -25%) scale(1);
-  }
-  50% {
-    transform: translate(-20%, -30%) scale(1.02);
-  }
-  100% {
-    transform: translate(-25%, -25%) scale(1);
-  }
+  0% { transform: translate(-25%, -25%) scale(1); }
+  50% { transform: translate(-20%, -30%) scale(1.02); }
+  100% { transform: translate(-25%, -25%) scale(1); }
 }
-
 @keyframes windReverse {
-  0% {
-    transform: translate(0, 0);
-  }
-  50% {
-    transform: translate(10%, -5%);
-  }
-  100% {
-    transform: translate(0, 0);
-  }
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(10%, -5%); }
+  100% { transform: translate(0, 0); }
 }
 
 main {
@@ -69,13 +70,13 @@ main {
 }
 
 /* === HEADER === */
-header {
-  background: rgba(255, 255, 255, 0.95);
+header.site-header {
+  background: var(--header-bg);
   padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #e0d8ca;
+  border-bottom: 2px solid var(--card-border);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   flex-wrap: wrap;
 }
@@ -88,55 +89,63 @@ header {
 /* === NAV BUTTONS === */
 .login-button,
 #logout-button {
-  background: linear-gradient(135deg, #d5c4a1, #f5f5f0);
-  color: #3a3a3a;
+  background: linear-gradient(135deg, var(--button-bg), var(--button-bg-hover));
+  color: #fff;
   padding: 8px 16px;
-  border: 1px solid #c2b59b;
+  border: 1px solid var(--button-bg-hover);
   text-decoration: none;
   border-radius: 8px;
   transition: all 0.3s ease;
   font-weight: 600;
 }
-
 .login-button:hover,
 #logout-button:hover {
-  background: linear-gradient(135deg, #e6d9c4, #f9f7f1);
-  border-color: #b5a789;
+  background: var(--accent);
+  border-color: var(--accent-dark);
 }
 
 /* === FOOTER === */
 footer {
-  background: #f2ede3;
+  background: var(--header-bg);
   padding: 10px 20px;
   text-align: center;
   font-size: 0.9rem;
-  border-top: 1px solid #d8cec1;
+  border-top: 1px solid var(--card-border);
 }
 
 /* === PLACE CARDS === */
 .place-card {
-  background: #fffdf8;
+  background: var(--card-bg);
   margin: 20px;
   padding: 16px;
-  border: 1px solid #e5dac5;
+  border: 1px solid var(--card-border);
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
 }
-
 .place-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
-
 .place-card h3 {
   margin-top: 0;
-  color: #5a4c3b;
+  color: var(--accent);
+}
+
+/* === REVIEW CARDS === */
+.review-card {
+  background: var(--review-card-bg);
+  margin: 20px;
+  padding: 12px;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
 /* === DETAILS BUTTON === */
 .details-button {
-  background-color: #cab89e;
+  background-color: var(--accent);
   color: #fff;
   border: none;
   padding: 8px 14px;
@@ -145,17 +154,16 @@ footer {
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
-
 .details-button:hover {
-  background-color: #a8926f;
+  background-color: var(--accent-dark);
 }
 
 /* === FILTER === */
 #filter {
   margin: 0 20px 20px 20px;
   padding: 10px;
-  background-color: #fdfaf4;
-  border: 1px solid #e0d8ca;
+  background-color: var(--review-card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -163,9 +171,14 @@ footer {
   font-weight: bold;
 }
 
-/* === ERROR === */
+/* === ERROR/SUCCESS === */
 .error {
   color: #c0392b;
+  font-weight: bold;
+  text-align: center;
+}
+.success {
+  color: #1abc9c;
   font-weight: bold;
   text-align: center;
 }
@@ -177,14 +190,12 @@ header .right-nav {
   align-items: center;
   gap: 12px;
 }
-
 header .right-nav {
   margin-left: auto;
 }
-
 #user-info {
   font-weight: bold;
-  color: #7b6e5d;
+  color: var(--accent-dark);
 }
 
 /* === STARS === */
@@ -194,42 +205,42 @@ header .right-nav {
   color: #ddd;
   cursor: pointer;
 }
-
 .star-container span:hover,
 .star-container span.hovered,
 .star-container span.selected {
-  color: #f1c40f;
+  color: var(--star);
 }
 
 /* === REVIEW FORM === */
 #add-review {
-  background: #fffdf8;
+  background: var(--card-bg);
   padding: 20px;
   margin: 20px 0;
-  border: 1px solid #e5dac5;
+  border: 1px solid var(--card-border);
   border-radius: 10px;
+  display: none; /* Masqué par défaut, affiché via JS si user connecté */
 }
-
+#add-review.active {
+  display: block;
+}
 #review-form label {
   font-weight: bold;
   display: block;
   margin-bottom: 8px;
-  color: #5a4c3b;
+  color: var(--accent-dark);
 }
-
 #review-text {
   width: 100%;
   padding: 10px;
-  border: 1px solid #cfc4ae;
+  border: 1px solid var(--card-border);
   border-radius: 6px;
   resize: vertical;
-  background-color: #fefdfb;
-  color: #333;
+  background-color: #f7faff;
+  color: var(--text-main);
   margin-bottom: 12px;
 }
-
 #review-form button {
-  background-color: #bca98c;
+  background-color: var(--button-bg);
   color: #fff;
   border: none;
   padding: 10px 18px;
@@ -238,17 +249,30 @@ header .right-nav {
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
-
 #review-form button:hover {
-  background-color: #a28c6f;
+  background-color: var(--button-bg-hover);
 }
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* === Responsive === */
+@media (max-width: 600px) {
+  main, #filter, .place-card, #add-review, .review-card {
+    margin: 8px !important;
+    padding: 8px !important;
+  }
+  header.site-header {
+    flex-direction: column;
+    padding: 8px;
+  }
+  .logo {
+    height: 38px;
+  }
 }
