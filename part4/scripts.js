@@ -123,12 +123,12 @@ function loadPlacesIfOnIndex() {
         prices.add(Math.ceil(place.price));
       });
 
-      [...prices].sort((a, b) => a - b).forEach(price => {
+      /*[...prices].sort((a, b) => a - b).forEach(price => {
         const option = document.createElement('option');
         option.value = price;
         option.textContent = `≤ ${price}€`;
         priceFilter.appendChild(option);
-      });
+      });*/
 
       priceFilter.addEventListener('change', () => {
         const max = parseFloat(priceFilter.value);
@@ -136,7 +136,12 @@ function loadPlacesIfOnIndex() {
           const priceText = card.querySelector('p').textContent;
           const match = priceText.match(/(\d+(\.\d+)?)/);
           const price = match ? parseFloat(match[0]) : 0;
-          card.style.display = price <= max ? 'block' : 'none';
+          // Si le filtre est vide ou non numérique, afficher toutes les places
+          if (!priceFilter.value || isNaN(max)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = price <= max ? 'block' : 'none';
+          }
         });
       });
     })
@@ -174,18 +179,44 @@ function fetchPlaceDetails(placeId, token = null) {
     .then(reviews => {
       if (reviews.length === 0) {
         reviewsSection.innerHTML = "<p>No reviews yet.</p>";
-        return;
+      } else {
+        reviews.forEach(review => {
+          const reviewCard = document.createElement('div');
+          reviewCard.className = 'review-card';
+          // Affiche le nom de l'utilisateur si disponible
+          const userName = review.user_first_name || review.user_name || 'Utilisateur';
+          reviewCard.innerHTML = `
+            <p><strong>${userName}</strong> <span style=\"color:#888;\">a noté</span> <strong>${review.rating}/5</strong></p>
+            <p>${review.text}</p>
+          `;
+          reviewsSection.appendChild(reviewCard);
+        });
       }
 
-      reviews.forEach(review => {
-        const reviewCard = document.createElement('div');
-        reviewCard.className = 'review-card';
-        reviewCard.innerHTML = `
-          <p><strong>Rating:</strong> ${review.rating}/5</p>
-          <p>${review.text}</p>
-        `;
-        reviewsSection.appendChild(reviewCard);
-      });
+      // Affichage dynamique du formulaire d'ajout de review
+      const addReviewSection = document.getElementById('add-review');
+      const token = getCookie('token');
+      if (!addReviewSection) return;
+      if (!token) {
+        addReviewSection.classList.remove('active');
+        return;
+      }
+      // Récupère l'utilisateur connecté
+      fetch('http://127.0.0.1:5000/api/v1/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(user => {
+          // Vérifie si user est propriétaire ou a déjà review
+          const isOwner = reviews.length > 0 && reviews.some(r => r.user_id === user.id && r.user_first_name === user.first_name);
+          const hasReviewed = reviews.some(r => r.user_id === user.id);
+          if (isOwner || hasReviewed) {
+            addReviewSection.classList.remove('active');
+          } else {
+            addReviewSection.classList.add('active');
+          }
+        })
+        .catch(() => addReviewSection.classList.remove('active'));
     });
 }
 
@@ -245,5 +276,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.location.pathname.includes('place.html')) {
     const placeId = getPlaceIdFromURL();
     fetchPlaceDetails(placeId);
+  }
+});
+
+
+// Ajout de sécurité : ne rien faire si le bouton login n'existe pas (pour compatibilité toutes pages)
+document.addEventListener('DOMContentLoaded', () => {
+  const loginLink = document.getElementById('login-link');
+  // Si c'est un <button> (rare), on ajoute un handler, sinon rien à faire pour un <a>
+  if (loginLink && loginLink.tagName === 'BUTTON') {
+    loginLink.onclick = function() {
+      window.location.href = 'login.html';
+    };
   }
 });

@@ -17,19 +17,22 @@ class PlaceReviewList(Resource):
     @api.response(200, 'List of reviews for the place retrieved successfully')
     @api.response(404, 'Place not found')
     def get(self, place_id):
-        """Get all reviews for a specific place"""
+        """Get all reviews for a specific place, with user name"""
         try:
             place_reviews = facade.get_reviews_by_place(place_id)
-            return [
-                {
+            reviews_with_user = []
+            for review in place_reviews:
+                user = facade.get_user(review.user_id)
+                reviews_with_user.append({
                     'id': review.id,
                     'text': review.text,
                     'rating': review.rating,
                     'user_id': review.user_id,
-                    'place_id': review.place_id
-                }
-                for review in place_reviews
-            ], 200
+                    'place_id': review.place_id,
+                    'user_first_name': user.first_name if user else None,
+                    'user_last_name': user.last_name if user else None
+                })
+            return reviews_with_user, 200
         except ValueError as e:
             return {'error': str(e)}, 404
 

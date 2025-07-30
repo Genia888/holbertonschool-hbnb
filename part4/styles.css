@@ -1,3 +1,41 @@
+/* --- Effets modernes et animations --- */
+
+.login-button, #logout-button {
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+.login-button:hover, #logout-button:hover {
+  background: linear-gradient(135deg, var(--button-bg-hover), var(--button-bg));
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(243, 140, 28, 0.2);
+}
+
+.place-card {
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.place-card:hover {
+  box-shadow: 0 4px 16px rgba(43, 93, 171, 0.15);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.place-card, .review-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.logo {
+  transition: transform 0.3s;
+}
+.logo:hover {
+  transform: rotate(-8deg) scale(1.08);
+}
 :root {
   --bg-main: #e8f0fe;
   --bg-secondary: #e0e7ff;

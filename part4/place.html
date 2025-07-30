@@ -8,12 +8,18 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <nav>
+
+  <header class="site-header">
+    <div class="header-left">
+      <a href="index.html">
+        <img src="images/logo.png" alt="HBnB Logo" class="logo">
+      </a>
+    </div>
+    <div class="header-right" id="auth-actions">
       <span id="user-info" style="display: none;"></span>
       <button id="logout-button" style="display: none;">Logout</button>
       <a href="login.html" class="login-button">Login</a>
-    </nav>
+    </div>
   </header>
 
   <main>
