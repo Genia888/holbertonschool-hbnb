@@ -186,8 +186,14 @@ function fetchPlaceDetails(placeId, token = null) {
           // Affiche le nom de l'utilisateur si disponible
           const userName = review.user_first_name || review.user_name || 'Utilisateur';
           reviewCard.innerHTML = `
-            <p><strong>${userName}</strong> <span style=\"color:#888;\">a noté</span> <strong>${review.rating}/5</strong></p>
-            <p>${review.text}</p>
+            <div class="review-header">
+              <span class="review-avatar">${userName.charAt(0).toUpperCase()}</span>
+              <span class="review-user"><strong>${userName}</strong></span>
+              <span class="review-sep">|</span>
+              <span class="review-action">rated</span>
+              <span class="review-rating"><strong>${review.rating}/5</strong> <span class="star">★</span></span>
+            </div>
+            <div class="review-body">${review.text}</div>
           `;
           reviewsSection.appendChild(reviewCard);
         });
@@ -278,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchPlaceDetails(placeId);
   }
 });
-
 
 // Ajout de sécurité : ne rien faire si le bouton login n'existe pas (pour compatibilité toutes pages)
 document.addEventListener('DOMContentLoaded', () => {
