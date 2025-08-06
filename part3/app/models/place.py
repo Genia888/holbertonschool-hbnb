@@ -2,6 +2,13 @@ from .basemodel import BaseModel
 from app import db
 from sqlalchemy.orm import relationship
 
+# Table d'association entre Place et Amenity
+place_amenity = db.Table(
+    'place_amenity',
+    db.Column('place_id', db.String(60), db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.String(60), db.ForeignKey('amenities.id'), primary_key=True)
+)
+
 class Place(BaseModel):
     __tablename__ = "places"
 
@@ -13,6 +20,7 @@ class Place(BaseModel):
     owner_id = db.Column(db.String(60), db.ForeignKey("users.id"), nullable=False)
     owner = db.relationship("User", backref="places", lazy=True)
     reviews = relationship("Review", back_populates="place", cascade="all, delete-orphan")
+    amenities = relationship("Amenity", secondary="place_amenity", back_populates="places")
 
     def __init__(self, title, description, price, latitude, longitude, owner_id):
         super().__init__()
@@ -33,5 +41,6 @@ class Place(BaseModel):
             "longitude": self.longitude,
             "owner_id": self.owner_id,
             "created_at": self.created_at.isoformat(),
-            "updated_at": self.updated_at.isoformat()
+            "updated_at": self.updated_at.isoformat(),
+            "amenities": [a.name for a in self.amenities] if hasattr(self, 'amenities') else []
         }

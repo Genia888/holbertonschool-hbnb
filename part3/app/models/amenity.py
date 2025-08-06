@@ -1,10 +1,12 @@
 from .basemodel import BaseModel
 from app.extensions import db
+from sqlalchemy.orm import relationship
 
 class Amenity(BaseModel):
     __tablename__ = "amenities"
 
     name = db.Column(db.String(255), nullable =False)
+    places = relationship("Place", secondary="place_amenity", back_populates="amenities")
     
     def __init__(self, name):
         super().__init__()

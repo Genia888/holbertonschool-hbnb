@@ -107,11 +107,26 @@ function loadPlacesIfOnIndex() {
     .then(data => {
       placesList.innerHTML = '';
       const prices = new Set();
+      const images = [
+        'images/big house.jpg',
+        'images/myhouse.jpg',
+        'images/little house.jpg',
+        'images/seb.jpg',
+        'images/room.jpg',
+        'images/hotel morocco.jpg',
+        'images/little house.jpg',
+        'images/camping.jpg',
+        'images/room rodez.jpg',
+        'images/castle.jpg',
+        'images/kiev.jpg',
+        'images/house.jpg',
+      ];
 
-      data.forEach(place => {
+      data.forEach((place, idx) => {
         const card = document.createElement('div');
         card.className = 'place-card';
         card.innerHTML = `
+          <img src="${place.image_url || images[idx % images.length]}" alt="Photo de ${place.title}" class="place-photo">
           <h3>${place.title}</h3>
           <p><strong>Price:</strong> ${place.price}€ / night</p>
           <button class="details-button" data-id="${place.id}">View Details</button>
@@ -160,18 +175,53 @@ function fetchPlaceDetails(placeId, token = null) {
   const placeDetailsSection = document.getElementById('place-details');
   const reviewsSection = document.getElementById('reviews');
 
-  fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`)
-    .then(response => response.json())
-    .then(place => {
-      placeDetailsSection.innerHTML = `
-        <div class="place-info">
-          <h2>${place.title}</h2>
-          <p>${place.description}</p>
-          <p><strong>Price:</strong> ${place.price}€</p>
-          <p><strong>Latitude:</strong> ${place.latitude}</p>
-          <p><strong>Longitude:</strong> ${place.longitude}</p>
-        </div>
-      `;
+  // Récupère toutes les places pour retrouver l'index
+  fetch('http://127.0.0.1:5000/api/v1/places/')
+    .then(res => res.json())
+    .then(allPlaces => {
+      // Trouve l'index de la place courante
+      const idx = allPlaces.findIndex(p => String(p.id) === String(placeId));
+      const defaultImages = [
+        'images/big house.jpg',
+        'images/myhouse.jpg',
+        'images/little house.jpg',
+        'images/seb.jpg',
+        'images/room.jpg',
+        'images/hotel morocco.jpg',
+        'images/little house.jpg',
+        'images/camping.jpg',
+        'images/room rodez.jpg',
+        'images/castle.jpg',
+        'images/kiev.jpg',
+        'images/house.jpg',
+      ];
+      fetch(`http://127.0.0.1:5000/api/v1/places/${placeId}`)
+        .then(response => response.json())
+        .then(place => {
+          let amenitiesHtml = '';
+          if (place.amenities && place.amenities.length > 0) {
+            amenitiesHtml = `<p><strong>Amenities:</strong> ${place.amenities.join(', ')}</p>`;
+          }
+          // Utilise l'image_url si présente, sinon la même image que sur l'index
+          let imageHtml = '';
+          if (place.image_url) {
+            imageHtml = `<img src="${place.image_url}" alt="Photo de ${place.title}" class="place-photo">`;
+          } else {
+            const imgSrc = defaultImages[idx >= 0 ? idx % defaultImages.length : 0];
+            imageHtml = `<img src="${imgSrc}" alt="Photo de ${place.title}" class="place-photo">`;
+          }
+          placeDetailsSection.innerHTML = `
+            <div class="place-info">
+              ${imageHtml}
+              <h2>${place.title}</h2>
+              <p>${place.description}</p>
+              <p><strong>Price:</strong> ${place.price}€</p>
+              <p><strong>Latitude:</strong> ${place.latitude}</p>
+              <p><strong>Longitude:</strong> ${place.longitude}</p>
+              ${amenitiesHtml}
+            </div>
+          `;
+        });
     });
 
   fetch(`http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`)
