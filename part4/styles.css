@@ -180,12 +180,23 @@ footer {
   width: 100%;
   height: auto;
   aspect-ratio: 16/9;
-  max-width: 340px;
+  max-width: 1000px; /* Encore plus grand */
   object-fit: cover;
   border-radius: 10px 10px 0 0;
   margin-bottom: 8px;
   background: #eee;
   box-shadow: 0 2px 8px rgba(43, 93, 171, 0.10);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  background-color: rgb(238, 238, 238);
+}
+
+@media (max-width: 1100px) {
+  .place-photo {
+    max-width: 98vw;
+  }
 }
 
 /* --- Amélioration visuelle des reviews --- */
